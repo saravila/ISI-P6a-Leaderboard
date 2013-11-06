@@ -4,6 +4,7 @@
 Players = new Meteor.Collection("players");
 
 if (Meteor.isClient) {
+
   Template.leaderboard.players = function () {  
     if (Session.get("sort_name")) {
       return Players.find({}, {
@@ -21,43 +22,38 @@ if (Meteor.isClient) {
     return player && player.name;
   };
 
-  Template.player.selected = function () {
+  Template.player.selected = function () { 
     return Session.equals("selected_player", this._id) ? "selected" : '';
   };
 
   Template.leaderboard.events({
     'click input.inc': function () {
       Players.update(Session.get("selected_player"), {$inc: {score: 5}});
-    }
-  });
-
-  Template.leaderboard.events({
-    'click input.sort_score': function () { 
-      Session.set("sort_name", false); 
-    }
-  });
-
-  Template.leaderboard.events({
+    },
     'click input.sort_name': function () { 
       Session.set("sort_name", true); 
-    }
-  });
-
-  Template.leaderboard.events({
-    'click input.reset_score': function () {   
-      Players.update({}, {score: 5});
+    },
+    'click input.sort_score': function () { 
+      Session.set("sort_name", false); 
+    },
+    'click input.reset_score': function () { 
+      Players.find({}).forEach(function(each) { 
+        Players.update(each._id, {name: each.name, score: Math.floor(Random.fraction()*10)*5});
+      }); 
     }
   });
 
   Template.player.events({
     'click': function () {
       Session.set("selected_player", this._id);
-    }
+    } 
   });
+
 } 
 
 // On server startup, create some players if the database is empty.
 if (Meteor.isServer) {
+
   Meteor.startup(function () {
     if (Players.find().count() === 0) {
       var names = ["Ada Lovelace",
@@ -70,4 +66,5 @@ if (Meteor.isServer) {
         Players.insert({name: names[i], score: Math.floor(Random.fraction()*10)*5});
     }
   });
+
 }
