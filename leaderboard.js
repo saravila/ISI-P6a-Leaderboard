@@ -4,9 +4,17 @@
 Players = new Meteor.Collection("players");
 
 if (Meteor.isClient) {
-  Template.leaderboard.players = function () {
-    return Players.find({}, {sort: {score: -1, name: 1}});
-  };
+  Template.leaderboard.players = function () {  
+    if (Session.get("sort_name")) {
+      return Players.find({}, {
+        sort: {name: 1}
+      });
+    } else {
+      return Players.find({}, {
+        sort: {score: -1}
+      });
+    }      
+  };   
 
   Template.leaderboard.selected_name = function () {
     var player = Players.findOne(Session.get("selected_player"));
@@ -23,12 +31,30 @@ if (Meteor.isClient) {
     }
   });
 
+  Template.leaderboard.events({
+    'click input.sort_score': function () { 
+      Session.set("sort_name", false); 
+    }
+  });
+
+  Template.leaderboard.events({
+    'click input.sort_name': function () { 
+      Session.set("sort_name", true); 
+    }
+  });
+
+  Template.leaderboard.events({
+    'click input.reset_score': function () {   
+      Players.update({}, {score: 5});
+    }
+  });
+
   Template.player.events({
     'click': function () {
       Session.set("selected_player", this._id);
     }
   });
-}
+} 
 
 // On server startup, create some players if the database is empty.
 if (Meteor.isServer) {

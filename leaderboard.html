@@ -9,6 +9,8 @@
 </body>
 
 <template name="leaderboard">
+  <input type="button" class="sort_score" value="Sort by score" />
+  <input type="button" class="sort_name" value="Sort by name" />
   <div class="leaderboard">
     {{#each players}}
       {{> player}}
@@ -25,6 +27,8 @@
   {{#unless selected_name}}
   <div class="none">Click a player to select</div>
   {{/unless}}
+
+  <input type="button" class="reset_score" value="Reset scores" />
 </template>
 
 <template name="player">
