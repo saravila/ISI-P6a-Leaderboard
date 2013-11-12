@@ -103,3 +103,14 @@ body {
         -1px 1px 3px rgba(000,000,000,0.9),
         0px 1px 0px rgba(255,255,255,0.2); 
 }
+
+p {
+    font-size: 25px;
+    margin: 10% 13%;
+    font-weight: bold;
+}
+
+div p {
+    border: 3px dashed white;
+    padding: 2.5%;
+}

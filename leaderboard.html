@@ -6,9 +6,13 @@
   <div id="outer">
     {{> leaderboard}}
   </div>
-</body>
+</body> 
 
 <template name="leaderboard">
+  <div>
+    <p> Añadir nombre: <input type = "text" id = "add_name"/> </p>
+  </div>
+  
   <input type="button" class="sort_score" value="Sort by score" />
   <input type="button" class="sort_name" value="Sort by name" />
   <div class="leaderboard">

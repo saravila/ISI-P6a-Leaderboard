@@ -38,11 +38,23 @@ if (Meteor.isClient) {
     },
     'click input.reset_score': function () { 
       Players.find({}).forEach(function(each) { 
-        Players.update(each._id, {name: each.name, score: randn});
+        Players.update(each._id, {name: each.name, score: Math.floor(Random.fraction()*10)*5});
       }); 
     },
     'click .player .delete': function () {
       Players.remove(this._id);
+    },
+    'keydown #add_name': function (event) {
+      if (event.which == 13) { 
+        var name = $('#add_name'); 
+        if (name.val() != '') {
+          Players.insert({
+            name: name.val(),
+            score: Math.floor(Random.fraction()*10)*5
+          });
+        }
+        name.val('');
+      }
     }
   });
 
@@ -52,11 +64,7 @@ if (Meteor.isClient) {
     } 
   });
 
-} 
-
-function randn () {
-  return Math.floor(Random.fraction()*10)*5;
-}
+}  
 
 // On server startup, create some players if the database is empty.
 if (Meteor.isServer) {
@@ -70,7 +78,7 @@ if (Meteor.isServer) {
                    "Nikola Tesla",
                    "Claude Shannon"];
       for (var i = 0; i < names.length; i++)
-        Players.insert({name: names[i], score: randn()});
+        Players.insert({name: names[i], score: Math.floor(Random.fraction()*10)*5});
     }
   });
 
