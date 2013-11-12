@@ -1,0 +1,45 @@
+<head>
+  <title>Leaderboard</title>
+</head>
+
+<body>
+  <div id="outer">
+    {{> leaderboard}}
+  </div>
+</body> 
+
+<template name="leaderboard">
+  <div>
+    <p> Añadir nombre: <input type = "text" id = "add_name"/> </p>
+  </div>
+  
+  <input type="button" class="sort_score" value="Sort by score" />
+  <input type="button" class="sort_name" value="Sort by name" />
+  <div class="leaderboard">
+    {{#each players}}
+      {{> player}} 
+    {{/each}}
+  </div>
+
+  {{#if selected_name}}
+  <div class="details">
+    <div class="name">{{selected_name}}</div>
+    <input type="button" class="inc" value="Give 5 points" />
+  </div>
+  {{/if}}
+
+  {{#unless selected_name}}
+  <div class="none">Click a player to select</div>
+  {{/unless}}
+
+  <input type="button" class="reset_score" value="Reset scores" />
+</template>
+
+<template name="player">
+  <div class="player {{selected}}">
+    <span class="name">{{name}}</span> 
+    <span class="score">{{score}}</span>
+    <input type = "button" class = "delete" value = "Delete"/>
+  </div>
+</template>
+
